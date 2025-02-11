@@ -1,18 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class Bootstrap : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Slider _loadingBar;
+    [SerializeField] private int _menuSceneId;
+    private Coroutine _loadSceneIE;
+
+    private void Start()
     {
-        
+        _loadSceneIE = StartCoroutine(LoadSceneIE());
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator LoadSceneIE()
     {
-        
+        AsyncOperation loadSceneOp = SceneManager.LoadSceneAsync(_menuSceneId);
+        loadSceneOp.allowSceneActivation = false;
+
+        while (loadSceneOp.progress < 0.9f)
+        {
+            _loadingBar.value = loadSceneOp.progress;
+            yield return null;
+        }
+        _loadingBar.value = 1f;
+        yield return new WaitForSeconds(0.5f);
+        loadSceneOp.allowSceneActivation = true;
     }
 }
