@@ -19,7 +19,6 @@ public class PearlCluster
 
         HashSet<Pearl> destroyedPearls = new HashSet<Pearl>();
 
-        // Animation parameters
         float delay = 0.01f;
 
         Sequence destructionSequence = DOTween.Sequence();
@@ -42,7 +41,6 @@ public class PearlCluster
 
             });
 
-            // Enqueue all un-destroyed neighbors of the current pearl
             foreach (Pearl neighbor in currentPearl.NeighborsPearls)
             {
                 if (!destroyedPearls.Contains(neighbor))
@@ -51,7 +49,6 @@ public class PearlCluster
                 }
             }
 
-            // Add a delay between each pearl's destruction
             destructionSequence.AppendInterval(delay);
         }
 
@@ -65,15 +62,14 @@ public class PearlCluster
     public void FindNeighbors(Pearl pearl, float pearlRadius, float offset)
     {
         List<Pearl> neighbors = new List<Pearl>();
-        float neighborRadius = (pearlRadius+ offset/2) * 2;  // The radius within which pearls are considered neighbors
+        float neighborRadius = (pearlRadius+ offset/2) * 2;
 
         foreach (var otherPearl in pearls)
         {
-            // Skip the pearl itself
+
             if (otherPearl == pearl)
                 continue;
 
-            // Check the distance between pearls
             float distance = Vector3.Distance(pearl.transform.position, otherPearl.transform.position);
             if (distance <= neighborRadius)
             {

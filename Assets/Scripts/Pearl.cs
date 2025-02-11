@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +8,6 @@ public partial class Pearl : MonoBehaviour
 {
     [SerializeField] private PearlType _type;
     [SerializeField] private Rigidbody _rb;
-    [SerializeField] private ParticleSystem _particleSystem;
 
     [SerializeField] private PearlCluster _pearlCluster;
 
@@ -18,6 +17,7 @@ public partial class Pearl : MonoBehaviour
 
     private void Update()
     {
+
         if (transform.position.y < -30)
             Destroy(gameObject);
     }
@@ -44,7 +44,7 @@ public partial class Pearl : MonoBehaviour
 
     public void CollectPearl()
     {
-        _particleSystem.Play();
+        //add score and etc 
     }
 
 }

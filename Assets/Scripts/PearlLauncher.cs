@@ -16,6 +16,9 @@ public class PearlLauncher : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _shootAudioClip;
 
+    [SerializeField] private float mobileSensitivity = 1f;
+    [SerializeField] private float pcSensitivity = 1f;
+
     [SerializeField] private float _force = 20;
     [SerializeField] private Transform _launchPivot;
     [SerializeField] private float _rotateSpeed = 30;
@@ -27,6 +30,9 @@ public class PearlLauncher : MonoBehaviour
 
     private bool _canShoot = false;
     private bool _allowShoot => _shootIndex < _availablePearls.Count;
+
+    private Vector2 lastTouchPosition;
+    private Vector2 lastMousePosition;
 
     private void Start()
     {
@@ -116,20 +122,57 @@ public class PearlLauncher : MonoBehaviour
             _currentProjectile = null;
         }
     }
-
     private void HandleControls()
     {
-        if (Input.GetKey(KeyCode.S)) _launchPivot.Rotate(Vector3.right * _rotateSpeed * Time.deltaTime);
-        else if (Input.GetKey(KeyCode.W)) _launchPivot.Rotate(Vector3.left * _rotateSpeed * Time.deltaTime);
-
-        if (Input.GetKey(KeyCode.A)) _launchPivot.Rotate(Vector3.down * _rotateSpeed * Time.deltaTime);
-        else if (Input.GetKey(KeyCode.D)) _launchPivot.Rotate(Vector3.up * _rotateSpeed * Time.deltaTime);
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.touchCount > 0)
         {
-            Debug.Log("Space pressed!");
-            if(_canShoot)
-            Shoot();
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                lastTouchPosition = touch.position;
+            }
+            else if (touch.phase == TouchPhase.Moved)
+            {
+                Vector2 touchDelta = touch.position - lastTouchPosition;
+
+                _launchPivot.Rotate(Vector3.right * -touchDelta.y * mobileSensitivity * _rotateSpeed * Time.deltaTime);
+                _launchPivot.Rotate(Vector3.up * touchDelta.x * mobileSensitivity * _rotateSpeed * Time.deltaTime);
+
+                lastTouchPosition = touch.position;
+            }
+
+            if (touch.phase == TouchPhase.Ended)
+            {
+                Debug.Log("Finger released!");
+                if (_canShoot)
+                    Shoot();
+            }
+        }
+        else
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                lastMousePosition = Input.mousePosition;
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                Vector2 mouseDelta = (Vector2)Input.mousePosition - lastMousePosition;
+
+                _launchPivot.Rotate(Vector3.right * -mouseDelta.y * pcSensitivity * _rotateSpeed * Time.deltaTime);
+                _launchPivot.Rotate(Vector3.up * mouseDelta.x * pcSensitivity * _rotateSpeed * Time.deltaTime);
+
+                lastMousePosition = Input.mousePosition;
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                Debug.Log("Mouse button released!");
+                if (_canShoot)
+                    Shoot();
+            }
         }
     }
+
+
 }

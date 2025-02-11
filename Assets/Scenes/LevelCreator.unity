@@ -433,22 +433,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultPearlPrefab: {fileID: 1812261316}
-  sphereRadius: 7
+  sphereRadius: 9
   pearlRadius: 0.5
   pearlsOffset: 0.6
-  clusterAffectZone: 4
+  clusterAffectZone: 7
   clusterPearlPrefabs:
   - {fileID: 276198981}
-  - {fileID: 1812261316}
+  - {fileID: 145183100}
   - {fileID: 145183100}
   - {fileID: 276198981}
-  - {fileID: 1812261316}
-  - {fileID: 145183100}
   - {fileID: 276198981}
-  - {fileID: 1812261316}
   - {fileID: 145183100}
+  - {fileID: 1812261316}
+  - {fileID: 276198981}
   allPearls: []
-  sphereCount: 711
+  sphereCount: 1175
   pearlClusters: []
   _createdPlanet: {fileID: 1740118356}
 --- !u!4 &1740118355
